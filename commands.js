@@ -6,6 +6,8 @@ const { prompt } = require('inquirer');
 
 const { addCustomer, findCustomer ,updateCustomer, removeCustomer, listCustomers} = require('./index');
 
+const dotenv = require('dotenv').config();
+
 const questions = [
     {
         type: 'input',

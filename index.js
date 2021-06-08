@@ -1,18 +1,22 @@
 const mongoose = require('mongoose');
 
+const dotenv = require('dotenv').config();
+
+const connectionString = process.env.MONGO_URI;
 
 // Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 
-const db = mongoose.connect('mongodb://localhost:27017/customer-cli', {
+const db = mongoose.connect(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true
+}, (err, connected) => {
+    if (err) console.log(err);
+    console.log("Database connection is successful");
 });
-
 
 // Import model
 const Customer = require('./models/customer');
-
 
 // Add customer
 const addCustomer = (customer) => {
@@ -24,6 +28,8 @@ const addCustomer = (customer) => {
     });
 }
 
+
+// Find customer
 const findCustomer = (name) => {
     // Make case insensitive
     const search = RegExp(name, 'i');
@@ -60,6 +66,7 @@ const removeCustomer = (_id) => {
 }
 
 
+// List all customers
 const listCustomers = () => {
     Customer.find()
         .then(customers => {
@@ -71,7 +78,6 @@ const listCustomers = () => {
 
 
 // Export all methods
-
 module.exports = {
     addCustomer,
     findCustomer,
